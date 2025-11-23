@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "business.api" {
+    
+}
+
+package "business.impl" {
+
+}
+
+@enduml
