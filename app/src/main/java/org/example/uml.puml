@@ -1,0 +1,55 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "business.api" {
+    interface Requete{
+        + getSousRequetes(): Optional<List<Requete>>
+        + getProfondeur(): int
+        + executer(): Set<Personne>
+        + accepter(v: Visiteur): void
+    }
+    
+}
+
+package "business.impl" {
+    class Personne{
+        - nom: String
+        - age: int
+        - salaire: int
+        + Personne(nom: String, age: int, salaire: int)
+        + getNom(): String
+        + getAge(): int
+        + getSalaire(): int
+    }
+
+    class Population implements Requete {
+        - personnes: Set<Personne>
+        + Population(personnes: Set<Personne>)
+    }
+
+    class Selection implements Requete{
+        - requeteSource: Requete
+        - critereSelection: Predicate<Personne>
+        + Selection(requeteSource: Requete, critereSelection: Predicate<Personne>)
+    }
+
+    class Difference implements Requete{
+        - requeteA: Requete
+        - requeteB: Requete
+        + Difference(requeteA: Requete, requeteB: Requete)
+    }
+
+    class Union implements Requete{
+        - sousRequetes: List<Requete>
+        + Union(sousRequetes: List<Requete>)
+    }
+
+}
+
+Requete ..> Personne : utilise
+
+Selection o--> "1" Requete : requeteSource
+Difference o--> "2" Requete : requeteA, requeteB
+Union o--> "2..*" Requete : sousRequetes
+
+@enduml
